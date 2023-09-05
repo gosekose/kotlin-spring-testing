@@ -25,7 +25,7 @@ class BookSoldReporter {
         bestSeller = bestSeller?.getUpdateBestSeller(bookName, totalSoldCount) ?: BestSeller(bookName, totalSoldCount)
     }
 
-    fun getBookSoldRecord(bookName: String): Int {
+    fun getBookSoldCount(bookName: String): Int {
         return bookSoldCountMap[bookName] ?: 0
     }
 }

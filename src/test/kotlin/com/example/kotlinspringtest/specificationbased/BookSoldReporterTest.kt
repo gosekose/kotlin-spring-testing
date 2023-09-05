@@ -17,7 +17,7 @@ class BookSoldReporterTest : BehaviorSpec({
             val bookName = "GoseBook"
             bookSoldReporter.saveBookSoldRecordAndUpdateBestSeller(bookName)
 
-            val soldCountResult = bookSoldReporter.getBookSoldRecord(bookName)
+            val soldCountResult = bookSoldReporter.getBookSoldCount(bookName)
             val bestSellerResult = bookSoldReporter.bestSeller
 
             then("판매한 책의 수량은 1, 베스트셀러가 되어야 해요") {
@@ -33,7 +33,7 @@ class BookSoldReporterTest : BehaviorSpec({
             bookSoldReporter.saveBookSoldRecordAndUpdateBestSeller(bookName)
             bookSoldReporter.saveBookSoldRecordAndUpdateBestSeller(bookName)
 
-            val soldCountResult = bookSoldReporter.getBookSoldRecord(bookName)
+            val soldCountResult = bookSoldReporter.getBookSoldCount(bookName)
             val bestSellerResult = bookSoldReporter.bestSeller
 
             then("판매한 책의 수량은 2, 베스트셀러가 되어야 해요") {
@@ -56,7 +56,7 @@ class BookSoldReporterTest : BehaviorSpec({
             val bookName = "KoseBook"
             bookSoldReporter.saveBookSoldRecordAndUpdateBestSeller(bookName, 2)
 
-            val soldCountResult = bookSoldReporter.getBookSoldRecord(bookName)
+            val soldCountResult = bookSoldReporter.getBookSoldCount(bookName)
             val bestSellerResult = bookSoldReporter.bestSeller
 
             then("판매한 책의 수량은 2, 베스트셀러는 다른 책이 되어야 해요") {
