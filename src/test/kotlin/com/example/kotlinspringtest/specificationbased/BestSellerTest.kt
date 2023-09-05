@@ -10,7 +10,7 @@ class BestSellerTest : BehaviorSpec({
         val bestSeller = BestSeller("GoseBook", 12)
 
 
-        `when`("비교할 책의 수량이 베스트셀러 책보다 작을 때") {
+        `when`("비교할 책의 이름이 다르고, 수량이 베스트셀러 책보다 작을 때") {
             val otherBookName = "KoseBook"
             val otherSoldCount = 11
             val result = bestSeller.getUpdateBestSeller(otherBookName, otherSoldCount)
@@ -20,7 +20,7 @@ class BestSellerTest : BehaviorSpec({
             }
         }
 
-        `when`("비교할 책의 수량이 베스트셀러 책보다 많을 때") {
+        `when`("비교할 책의 이름이 다르고, 수량이 베스트셀러 책보다 많을 때") {
             val otherBookName = "KoseBook"
             val otherSoldCount = 13
             val result = bestSeller.getUpdateBestSeller(otherBookName, otherSoldCount)
@@ -32,7 +32,7 @@ class BestSellerTest : BehaviorSpec({
             }
         }
 
-        `when`("비교할 책의 수량이 베스트셀러와 같고, 이름은 사전순으로 느릴 때") {
+        `when`("비교할 책의 이름은 사전순으로 느리고, 수량이 베스트셀러와 같을 떄") {
             val otherBookName = "KoseBook"
             val otherSoldCount = 12
             val result = bestSeller.getUpdateBestSeller(otherBookName, otherSoldCount)
@@ -42,7 +42,7 @@ class BestSellerTest : BehaviorSpec({
             }
         }
 
-        `when`("비교할 책의 수량이 베스트셀러와 같고, 이름은 사전순으로 빠를 때") {
+        `when`("비교할 책의 이름은 사전순으로 빠르고, 수량이 베스트셀러와 같을 떄") {
             val otherBookName = "CoseBook"
             val otherSoldCount = 12
             val result = bestSeller.getUpdateBestSeller(otherBookName, otherSoldCount)
