@@ -8,7 +8,7 @@ class Basket(
         private set
 
     fun add(product: Product, requiredQuantity: Long) {
-        validateQuantity(product.stock, requiredQuantity)
+        validateAddingQuantity(product, requiredQuantity)
         basket[product] = basket.getOrDefault(product, 0) + requiredQuantity
         plusTotalPrice(product.price, requiredQuantity)
     }
@@ -34,8 +34,8 @@ class Basket(
         }
     }
 
-    fun decreaseQuantity(product: Product, requiredQuantity: Long) {
-        validateQuantity(product.stock, requiredQuantity)
+    fun updateQuantity(product: Product, requiredQuantity: Long) {
+        validateUpdatingQuantity(product, requiredQuantity)
 
         val quantityInBasket = basket[product]
 
@@ -46,7 +46,7 @@ class Basket(
 
     private fun changeOrRemoveQuantity(product: Product, quantityInBasket: Long, requiredQuantity: Long) {
         when {
-            quantityInBasket - requiredQuantity <= 0 -> {
+            requiredQuantity <= 0 -> {
                 basket.remove(product)
                 minusTotalPrice(
                     price = product.price,
@@ -54,11 +54,19 @@ class Basket(
                 )
             }
 
-            else -> {
+            quantityInBasket >= requiredQuantity -> {
                 basket[product] = requiredQuantity
                 minusTotalPrice(
                     price = product.price,
                     quantity = (quantityInBasket - requiredQuantity),
+                )
+            }
+
+            quantityInBasket < requiredQuantity -> {
+                basket[product] = requiredQuantity
+                plusTotalPrice(
+                    price = product.price,
+                    quantity = (requiredQuantity - quantityInBasket),
                 )
             }
         }
@@ -75,8 +83,21 @@ class Basket(
         totalPrice -= price * quantity
     }
 
-    private fun validateQuantity(stockQuantity: Long, requiredQuantity: Long) {
-        require(stockQuantity >= requiredQuantity) { throw BasketException(BasketErrorCode.SHORTAGE_STOCK) }
+    private fun validateAddingQuantity(product: Product, requiredQuantity: Long) {
+        val stock = product.stock
+        val alreadyStoredRequiredQuantity = basket[product] ?: 0
+
+        require(stock >= alreadyStoredRequiredQuantity + requiredQuantity) {
+            throw BasketException(BasketErrorCode.SHORTAGE_STOCK)
+        }
+        require(requiredQuantity >= 0) { throw BasketException(BasketErrorCode.INPUT_QUANTITY_NOT_NEGATIVE) }
+    }
+
+
+    private fun validateUpdatingQuantity(product: Product, requiredQuantity: Long) {
+        val stock = product.stock
+
+        require(stock >= requiredQuantity) { throw BasketException(BasketErrorCode.SHORTAGE_STOCK) }
         require(requiredQuantity >= 0) { throw BasketException(BasketErrorCode.INPUT_QUANTITY_NOT_NEGATIVE) }
     }
 
