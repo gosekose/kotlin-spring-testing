@@ -7,10 +7,10 @@ class Basket(
     var totalPrice = 0L
         private set
 
-    fun add(product: Product, quantity: Long) {
-        validateQuantity(quantity)
-        basket[product] = basket.getOrDefault(product, 0) + quantity
-        plusTotalPrice(product.price, quantity)
+    fun add(product: Product, requiredQuantity: Long) {
+        validateQuantity(product.stock, requiredQuantity)
+        basket[product] = basket.getOrDefault(product, 0) + requiredQuantity
+        plusTotalPrice(product.price, requiredQuantity)
     }
 
     fun remove(product: Product) {
@@ -24,8 +24,18 @@ class Basket(
         }
     }
 
+    fun getBasketItem(): List<BasketProduct> {
+        return basket.entries.map { (product, quantity) ->
+            BasketProduct(
+                name = product.name,
+                price = product.price,
+                quantity = quantity,
+            )
+        }
+    }
+
     fun decreaseQuantity(product: Product, requiredQuantity: Long) {
-        validateQuantity(requiredQuantity)
+        validateQuantity(product.stock, requiredQuantity)
 
         val quantityInBasket = basket[product]
 
@@ -65,8 +75,9 @@ class Basket(
         totalPrice -= price * quantity
     }
 
-    private fun validateQuantity(quantity: Long) {
-        require(quantity >= 0) { throw BasketException(BasketErrorCode.INPUT_QUANTITY_NOT_NEGATIVE) }
+    private fun validateQuantity(stockQuantity: Long, requiredQuantity: Long) {
+        require(stockQuantity >= requiredQuantity) { throw BasketException(BasketErrorCode.SHORTAGE_STOCK) }
+        require(requiredQuantity >= 0) { throw BasketException(BasketErrorCode.INPUT_QUANTITY_NOT_NEGATIVE) }
     }
 
     private fun validateTotalPrice(expectedTotalPrice: Long) {
@@ -74,7 +85,7 @@ class Basket(
     }
 }
 
-class Product(
+data class Product(
     val id: Long,
     val name: String,
     val price: Long,
@@ -85,7 +96,10 @@ enum class BasketErrorCode(
     val code: String,
     val message: String,
 ) {
-    INPUT_QUANTITY_NOT_NEGATIVE("404", "요청 수량음 음수가 될 수 없습니다."),
+    SHORTAGE_STOCK("400", "재고가 부족합니다."), INPUT_QUANTITY_NOT_NEGATIVE(
+        "404",
+        "요청 수량음 음수가 될 수 없습니다."
+    ),
     TOTAL_AMOUNT_NEGATIVE("500", "장바구니 금액은 0이 될 수 없습니다.")
 }
 
@@ -98,3 +112,9 @@ class BasketException(
         get() = errorCode.message
 
 }
+
+data class BasketProduct(
+    val name: String,
+    val price: Long,
+    val quantity: Long,
+)
