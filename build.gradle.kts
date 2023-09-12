@@ -8,16 +8,10 @@ plugins {
     kotlin("plugin.jpa") version "1.8.22"
 }
 
-group = "com.example"
-version = "0.0.1-SNAPSHOT"
-
 java {
     sourceCompatibility = JavaVersion.VERSION_17
 }
 
-repositories {
-    mavenCentral()
-}
 
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
@@ -32,24 +26,46 @@ dependencies {
     testImplementation("io.kotest:kotest-assertions-core:5.4.2")
     testImplementation("io.kotest:kotest-property:5.4.2")
     testImplementation("io.kotest.extensions:kotest-extensions-spring:1.1.2")
+    implementation(kotlin("script-runtime"))
 }
 
-tasks.withType<KotlinCompile> {
-    kotlinOptions {
-        freeCompilerArgs += "-Xjsr305=strict"
-        jvmTarget = "17"
+allprojects {
+
+    group = "com.order"
+    version = "0.0.1-SNAPSHOT"
+
+    tasks.withType<KotlinCompile> {
+        kotlinOptions {
+            freeCompilerArgs += "-Xjsr305=strict"
+            jvmTarget = "17"
+        }
+    }
+
+    tasks.withType<Test> {
+        useJUnitPlatform()
+    }
+
+    repositories {
+        mavenCentral()
     }
 }
 
-tasks.withType<Test> {
-    useJUnitPlatform()
-}
+subprojects {
+    apply {
+        apply(plugin = "org.springframework.boot")
+        apply(plugin = "io.spring.dependency-management")
+        apply(plugin = "org.jetbrains.kotlin.plugin.spring")
+        apply(plugin = "org.jetbrains.kotlin.plugin.jpa")
+        apply(plugin = "kotlin")
+        apply(plugin = "kotlin-kapt")
+    }
 
-allOpen {
-    annotation("javax.persistence.Entity")
-    annotation("javax.persistence.MappedSuperclass")
-    annotation("javax.persistence.Embeddable")
-    annotation("jakarta.persistence.Entity")
-    annotation("jakarta.persistence.MappedSuperclass")
-    annotation("jakarta.persistence.Embeddable")
+    dependencies {
+        testImplementation("org.springframework.boot:spring-boot-starter-test")
+
+        testImplementation("io.kotest:kotest-runner-junit5:5.4.2")
+        testImplementation("io.kotest:kotest-assertions-core:5.4.2")
+        testImplementation("io.kotest:kotest-property:5.4.2")
+        testImplementation("io.kotest.extensions:kotest-extensions-spring:1.1.2")
+    }
 }
