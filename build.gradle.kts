@@ -9,16 +9,16 @@ plugins {
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_17
+    sourceCompatibility = JavaVersion.VERSION_19
 }
 
 
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-web")
+    runtimeOnly("com.h2database:h2")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
-    runtimeOnly("com.h2database:h2")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 
     implementation ("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
@@ -26,6 +26,7 @@ dependencies {
     testImplementation("io.kotest:kotest-assertions-core:5.4.2")
     testImplementation("io.kotest:kotest-property:5.4.2")
     testImplementation("io.kotest.extensions:kotest-extensions-spring:1.1.2")
+    testImplementation("io.mockk:mockk:1.13.7")
     implementation(kotlin("script-runtime"))
 }
 
@@ -37,7 +38,7 @@ allprojects {
     tasks.withType<KotlinCompile> {
         kotlinOptions {
             freeCompilerArgs += "-Xjsr305=strict"
-            jvmTarget = "17"
+            jvmTarget = "19"
         }
     }
 
@@ -61,11 +62,16 @@ subprojects {
     }
 
     dependencies {
+        implementation("org.jetbrains.kotlin:kotlin-reflect")
+        implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
         testImplementation("org.springframework.boot:spring-boot-starter-test")
 
+        implementation ("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
         testImplementation("io.kotest:kotest-runner-junit5:5.4.2")
         testImplementation("io.kotest:kotest-assertions-core:5.4.2")
         testImplementation("io.kotest:kotest-property:5.4.2")
         testImplementation("io.kotest.extensions:kotest-extensions-spring:1.1.2")
+        testImplementation("io.mockk:mockk:1.13.7")
+        implementation(kotlin("script-runtime"))
     }
 }
