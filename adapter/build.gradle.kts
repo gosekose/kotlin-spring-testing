@@ -11,6 +11,7 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     implementation(project(":domain"))
+    implementation(project(":application"))
 }
 
 allOpen {
