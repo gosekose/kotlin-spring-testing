@@ -1,6 +1,6 @@
 rootProject.name = "kotlin-spring-test"
 
-include("domain", "adapter")
+include("domain", "adapter", "application")
 
 pluginManagement {
     repositories {
