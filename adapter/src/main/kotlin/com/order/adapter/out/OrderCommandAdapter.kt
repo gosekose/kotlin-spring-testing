@@ -4,7 +4,9 @@ import com.order.adapter.persistence.OrderEntity
 import com.order.adapter.persistence.repository.OrderRepository
 import com.order.application.port.out.OrderCommandPort
 import com.order.model.Order
+import org.springframework.stereotype.Component
 
+@Component
 class OrderCommandAdapter(
     private val orderRepository: OrderRepository,
 ) : OrderCommandPort {
