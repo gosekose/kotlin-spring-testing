@@ -3,11 +3,11 @@ package com.order.model
 import com.order.share.UidCreation
 
 class Order(
-    var id: Long = 0L,
     val txId: String,
     val user: User,
     val product: Product,
     val payment: Payment,
+    var id: Long = 0L,
 ) {
     companion object {
         fun of(
