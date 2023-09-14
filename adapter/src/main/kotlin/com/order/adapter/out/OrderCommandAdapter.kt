@@ -1,6 +1,6 @@
 package com.order.adapter.out
 
-import com.order.adapter.persistence.OrderEntity
+import com.order.adapter.persistence.entity.OrderEntity
 import com.order.adapter.persistence.repository.OrderRepository
 import com.order.application.port.out.OrderCommandPort
 import com.order.model.Order
